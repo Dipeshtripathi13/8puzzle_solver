@@ -5,7 +5,7 @@ from config import goal, initial, backgroundColor, screen_size
 from draw_util import Drawer
 
 
-
+# Initialize the Pygame window
 screen = pygame.display.set_mode(screen_size) # w, h
 
 pygame.display.set_caption('8 Puzzle Solver')
@@ -14,27 +14,8 @@ screen.fill(backgroundColor)
 pygame.init()
 font = pygame.font.SysFont('Times', 15)
 running = True
-
-
-# def draw_state(screen, state, pos, text): # state is 3x3 mat
-#     global font
-#     w = 60
-#     h= 60
-#     for i, column in zip(state, range(3)):
-#         for count, row in zip(i, range(3)):
-#             x = pos[0]+w*row
-#             y = pos[1]+h*column
-#             rectangle_ = pygame.Rect(x, y, w, h)
-#             pygame.draw.rect(screen, ((count*15)%255, 0, 0), rectangle_)
-#             del rectangle_
-#             screen.blit(font.render(str(count%9), True, (255,255,255)), (x+w/2, y+h/2))
-#             pygame.display.update()
-
-#     i = screen.blit(font.render(text, True, (0,0,0)), (pos[0], pos[1]-h))
-#     del i
-
     
-
+# Solver class that solves the puzzle
 class Solver:
     def __init__(self, initialState, finalState, screen, events):
         self.initial = initialState
@@ -180,7 +161,8 @@ class Solver:
         print(f'\nSummary:\n\tSteps: {step}')
         self.totalSteps = step
 
-#pygame window creation
+# Create an instance of the Drawer class to handle drawing the puzzle
+
 drawer = Drawer(screen, font)
 drawer.drawActual((50, 100))
 
@@ -195,6 +177,7 @@ pygame.draw.line(screen, (0, 0, 0), (0, 600/2), (600, 600/2), width=1)
 pygame.display.update()
 runSolver = True
 traversedStateIndex = 0
+# Main program loop
 if __name__ == '__main__':
     while running:
         events = pygame.event.get()
@@ -211,6 +194,8 @@ if __name__ == '__main__':
                 if event.key in [pygame.K_DOWN, pygame.K_s]:
                     traversedStateIndex -= 1
         if runSolver:
+            # Create an instance of the Solver class and solve the puzzle
+
             S1 = Solver(initial, goal, screen, events)
             screen.blit(font.render('Total Steps: ' + str(S1.totalSteps), True, (0,0,0)), (600/2 + 50, 600/2+10))
             pygame.display.update()
